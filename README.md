@@ -1,145 +1,279 @@
-# CompetiAI
+# 🚀 CompetAI – AI-Powered Competitive Intelligence Platform
 
-AI-Powered Competitive Intelligence Platform using Selenium, PostgreSQL, RAG, Gemini, and Streamlit.
+CompetAI is an AI-powered competitive intelligence platform that automatically monitors competitor websites, tracks daily product and price changes, summarizes competitor blogs using Large Language Models (LLMs), and enables intelligent question answering using Retrieval-Augmented Generation (RAG).
 
-## Features
+The platform helps businesses stay informed about competitor pricing, product launches, and content strategy through automated data collection and AI-powered insights.
 
-- Competitor Monitoring
-- Product Tracking
-- AI Chatbot
-- RAG
-- Dashboard
-- Change Detection
+---
 
-                                    +----------------------+
-                                    |     Competitor       |
-                                    +----------------------+
-                                    | id (PK)              |
-                                    | name                |
-                                    | website             |
-                                    | category            |
-                                    | description         |
-                                    | is_active           |
-                                    | created_at          |
-                                    +----------+----------+
-                                               |
-                              One Competitor has Many Products
-                                               |
-                                               |
-                                    +----------v----------+
-                                    |      Product        |
-                                    +---------------------+
-                                    | id (PK)             |
-                                    | competitor_id (FK)  |
-                                    | name                |
-                                    | product_url         |
-                                    | sku                |
-                                    | category           |
-                                    | brand              |
-                                    | image_url          |
-                                    | is_active          |
-                                    | created_at         |
-                                    +----------+----------+
-                                               |
-                          One Product has Many Daily Snapshots
-                                               |
-                                               |
-                                    +----------v-----------+
-                                    |  ProductSnapshot     |
-                                    +----------------------+
-                                    | id (PK)              |
-                                    | product_id (FK)      |
-                                    | price               |
-                                    | rating              |
-                                    | reviews_count       |
-                                    | availability        |
-                                    | discount            |
-                                    | scraped_at          |
-                                    +----------+----------+
-                                               |
-                                One Snapshot creates One Change Record
-                                               |
-                                               |
-                                    +----------v----------+
-                                    |    PriceChange      |
-                                    +---------------------+
-                                    | id (PK)             |
-                                    | snapshot_id (FK)    |
-                                    | previous_price      |
-                                    | current_price       |
-                                    | price_difference    |
-                                    | percentage_change   |
-                                    | change_type         |
-                                    | created_at          |
-                                    +---------------------+
+## 📌 Features
 
+- 🔍 Automated competitor website monitoring
+- 💻 Dynamic web scraping using Selenium
+- 💰 Daily product price tracking
+- 📈 Historical price comparison and trend analysis
+- 📰 Competitor blog scraping
+- 🤖 AI-powered blog summarization using Google Gemini
+- 🧠 RAG-based intelligent chatbot for querying competitor data
+- 📊 PostgreSQL database for structured data storage
+- ⏰ Automated scheduling for periodic scraping
+- 📉 Dashboard for competitive analytics and insights
 
+---
 
+# 🏗️ System Architecture
+
+```text
+                    Competitor Websites
+                            │
+                            ▼
+                  Selenium Web Scraper
+                            │
+            ┌───────────────┴───────────────┐
+            ▼                               ▼
+      Product Data                    Blog Data
+            │                               │
+            ▼                               ▼
+     PostgreSQL Database          Gemini AI Summarizer
+            │                               │
+            └───────────────┬───────────────┘
+                            ▼
+                     RAG Knowledge Base
+                            │
+                            ▼
+                   AI Chat & Dashboard
+```
+
+---
+
+# 🗄️ Database Design
+
+```text
 Competitor
-      |
-      | One Competitor has Many Blogs
-      |
-      v
-+----------------------+
-|      BlogPost        |
-+----------------------+
-| id (PK)              |
-| competitor_id (FK)   |
-| title                |
-| blog_url             |
-| published_date       |
-| content              |
-| scraped_at           |
-+----------+-----------+
-           |
-           | One Blog has One AI Summary
-           |
-           v
-+----------------------+
-|    BlogSummary       |
-+----------------------+
-| id (PK)              |
-| blog_id (FK)         |
-| summary              |
-| keywords             |
-| created_at           |
-+----------------------+
+     │
+     ├──────────────┐
+     │              │
+     ▼              ▼
+ Product       BlogPost
+     │              │
+     ▼              ▼
+ProductSnapshot  BlogSummary
+     │
+     ▼
+PriceChange
 
+SchedulerRun
 
+RAGDocument
 
-+----------------------+
-|    SchedulerRun      |
-+----------------------+
-| id (PK)              |
-| start_time           |
-| end_time             |
-| status               |
-| products_scraped     |
-| blogs_scraped        |
-| errors               |
-+----------------------+
+ChatHistory
 
+ScrapingTarget
+```
 
+---
 
-+----------------------+
-|    RAGDocument       |
-+----------------------+
-| id (PK)              |
-| source_type          |
-| source_id            |
-| chunk_text           |
-| embedding_id         |
-| created_at           |
-+----------------------+
+# 🛠️ Tech Stack
 
+## Backend
+- Python
+- FastAPI
 
+## Web Scraping
+- Selenium
+- BeautifulSoup
 
-+----------------------+
-|    ChatHistory       |
-+----------------------+
-| id (PK)              |
-| question             |
-| answer               |
-| response_time        |
-| created_at           |
-+----------------------+
+## Database
+- PostgreSQL
+- SQLAlchemy ORM
+
+## Artificial Intelligence
+- Google Gemini API
+- Retrieval-Augmented Generation (RAG)
+- FAISS Vector Store
+
+## Scheduling
+- APScheduler
+
+## Data Processing
+- Pandas
+
+## Version Control
+- Git
+- GitHub
+
+---
+
+# 📂 Project Structure
+
+```text
+CompetAI/
+│
+├── config/
+├── data/
+├── database/
+│   ├── create_db.py
+│   ├── crud.py
+│   ├── db.py
+│   ├── models.py
+│   └── __init__.py
+│
+├── detector/
+├── docs/
+├── logs/
+├── scraper/
+├── scheduler/
+├── rag/
+├── api/
+├── dashboard/
+│
+├── requirements.txt
+├── README.md
+├── .env.example
+└── .gitignore
+```
+
+---
+
+# ⚙️ Installation
+
+## Clone the repository
+
+```bash
+git clone https://github.com/your-username/CompetAI.git
+```
+
+```bash
+cd CompetAI
+```
+
+---
+
+## Create Virtual Environment
+
+### Windows
+
+```bash
+python -m venv venv
+```
+
+```bash
+venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+---
+
+## Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Configure Environment Variables
+
+Create a `.env` file.
+
+```env
+DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/competiai_db
+
+GEMINI_API_KEY=your_api_key
+
+EMAIL_USER=your_email@gmail.com
+
+EMAIL_PASSWORD=your_app_password
+```
+
+---
+
+## Run Database Setup
+
+```bash
+python -m database.create_db
+```
+
+---
+
+# 📊 Current Development Progress
+
+| Module | Status |
+|----------|--------|
+| Project Setup | ✅ Completed |
+| PostgreSQL Integration | ✅ Completed |
+| SQLAlchemy ORM | ✅ Completed |
+| Competitor Model | ✅ Completed |
+| Product Model | ✅ Completed |
+| Product Snapshot Module | 🚧 In Progress |
+| Price Change Detection | ⏳ Planned |
+| Selenium Scraper | ⏳ Planned |
+| Scheduler | ⏳ Planned |
+| Blog Scraper | ⏳ Planned |
+| Gemini Integration | ⏳ Planned |
+| RAG Chatbot | ⏳ Planned |
+| Dashboard | ⏳ Planned |
+| Deployment | ⏳ Planned |
+
+---
+
+# 🎯 Learning Outcomes
+
+This project demonstrates practical experience with:
+
+- Relational Database Design
+- SQLAlchemy ORM
+- PostgreSQL
+- FastAPI Backend Development
+- Selenium Web Automation
+- AI Integration with Gemini
+- Retrieval-Augmented Generation (RAG)
+- Vector Databases
+- Background Task Scheduling
+- Scalable Backend Architecture
+
+---
+
+# 🚀 Future Enhancements
+
+- Multi-competitor support
+- Product availability tracking
+- Email alerts for price changes
+- Dashboard analytics
+- Authentication & Authorization
+- REST API
+- Docker Support
+- Cloud Deployment (AWS/GCP/Azure)
+- Redis Caching
+- CI/CD Pipeline
+
+---
+
+# 🤝 Contributing
+
+Contributions, suggestions, and improvements are welcome.
+
+1. Fork the repository
+2. Create a new feature branch
+3. Commit your changes
+4. Push to your branch
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is intended for educational and portfolio purposes.
+
+---
+
+# 👨‍💻 Author
+
+**Anis Shaikh**
+
+Aspiring AI Engineer | Data Analyst | Backend Developer
