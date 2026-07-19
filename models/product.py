@@ -1,46 +1,10 @@
-from sqlalchemy import String, Boolean, DateTime, ForeignKey
+from sqlalchemy import String, Boolean, DateTime, ForeignKey, Numeric,Float, Integer, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
+from decimal import Decimal
 
 from database.db import Base
 from datetime import datetime
-
-
-class Competitor(Base):
-    __tablename__ = "competitors"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-
-    name: Mapped[str] = mapped_column(
-        String(100),
-        nullable=False,
-        unique=True
-    )
-
-    website: Mapped[str] = mapped_column(
-        String(255),
-        nullable=False
-    )
-
-    category: Mapped[str] = mapped_column(
-        String(100),
-        nullable=False
-    )
-
-    is_active: Mapped[bool] = mapped_column(
-        Boolean,
-        default=True
-    )
-
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=datetime.utcnow
-    )
-
-    products: Mapped[list["Product"]] = relationship(
-    back_populates="competitor",
-    cascade="all, delete-orphan"
-    )
 
 # ======================================================
 # Product Model
@@ -84,6 +48,15 @@ class Product(Base):
         String(100)
     )
 
+    current_price: Mapped[Decimal | None] = mapped_column(
+    Numeric(10, 2)
+    )
+
+    currency: Mapped[str] = mapped_column(
+    String(10),
+    default="INR"
+    )
+
     image_url: Mapped[str | None] = mapped_column(
         String(500)
     )
@@ -100,4 +73,9 @@ class Product(Base):
 
     competitor: Mapped["Competitor"] = relationship(
         back_populates="products"
+    )
+
+    snapshots: Mapped[list["ProductSnapshot"]] = relationship(
+    back_populates="product",
+    cascade="all, delete-orphan"
     )
