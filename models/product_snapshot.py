@@ -62,7 +62,3 @@ class ProductSnapshot(Base):
         back_populates="snapshots"
     )
 
-    price_changes: Mapped[list["PriceChange"]] = relationship(
-    back_populates="snapshot",
-    cascade="all, delete-orphan"
-    )
