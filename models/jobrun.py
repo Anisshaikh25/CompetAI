@@ -18,6 +18,10 @@ class JobRun(Base):
         nullable=False
     )
 
+    triggered_by: Mapped[str | None] = mapped_column(
+    String(50)
+   )
+
     status: Mapped[JobStatus] = mapped_column(
         SQLEnum(JobStatus),
         default=JobStatus.RUNNING,
