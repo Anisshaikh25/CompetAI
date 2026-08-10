@@ -18,7 +18,7 @@ try:
     # Create a product
     product = product_repo.create_product(
         competitor_id=competitor.id,
-        product_code="DELL001",
+        product_code="DELL002",
         name="Dell Inspiron 15",
         category="Laptop",
         current_price=59999,
