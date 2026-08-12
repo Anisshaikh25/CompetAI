@@ -1,4 +1,4 @@
-from database.repositories.knowledge_document_repository import (
+from database.repositories.knowledge_repository import (
     KnowledgeDocumentRepository
 )
 
