@@ -1,40 +1,91 @@
-class JobRunService:
+from database.repositories.competitor_repository import CompetitorRepository
+
+
+class CompetitorService:
 
     def __init__(self, db):
-        self.job_repo = JobRunRepository(db)
+        self.competitor_repo = CompetitorRepository(db)
 
-    def start_job(
+    # --------------------------------------------------
+    # Create Competitor
+    # --------------------------------------------------
+
+    def create_competitor(
         self,
-        job_type: JobType,
-        triggered_by: str = "scheduler"
+        name: str,
+        website: str,
+        category: str | None = None
     ):
-        return self.job_repo.create_job_run(
-            job_type=job_type,
-            triggered_by=triggered_by
+
+        return self.competitor_repo.create_competitor(
+            name=name,
+            website=website,
+            category=category
         )
 
-    def complete_job(
+    # --------------------------------------------------
+    # Get or Create Competitor
+    # --------------------------------------------------
+
+    def get_or_create_competitor(
         self,
-        job,
-        products_scraped=0,
-        blogs_scraped=0,
-        documents_indexed=0
+        name: str,
+        website: str,
+        category: str | None = None
     ):
-        return self.job_repo.mark_success(
-            job=job,
-            products_scraped=products_scraped,
-            blogs_scraped=blogs_scraped,
-            documents_indexed=documents_indexed
+
+        competitor = self.competitor_repo.get_by_name(name)
+
+        if competitor:
+            return competitor
+
+        return self.competitor_repo.create_competitor(
+            name=name,
+            website=website,
+            category=category
         )
 
-    def fail_job(self, job, error_message):
-        return self.job_repo.mark_failed(
-            job=job,
-            error_message=error_message
+    # --------------------------------------------------
+    # Get Competitor by ID
+    # --------------------------------------------------
+
+    def get_competitor(
+        self,
+        competitor_id: int
+    ):
+
+        return self.competitor_repo.get_by_id(
+            competitor_id
         )
 
-    def get_job(self, job_id):
-        return self.job_repo.get_by_id(job_id)
+    # --------------------------------------------------
+    # Update Competitor
+    # --------------------------------------------------
 
-    def get_all_jobs(self):
-        return self.job_repo.get_all()
+    def update_competitor(
+        self,
+        competitor,
+        name: str | None = None,
+        website: str | None = None,
+        category: str | None = None
+    ):
+
+        return self.competitor_repo.update_competitor(
+            competitor=competitor,
+            name=name,
+            website=website,
+            category=category
+        )
+
+    # --------------------------------------------------
+    # Deactivate Competitor
+    # --------------------------------------------------
+
+    def deactivate_competitor(
+        self,
+        competitor
+    ):
+
+        return self.competitor_repo.deactivate_competitor(
+            competitor
+        )

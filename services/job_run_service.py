@@ -1,3 +1,6 @@
+from database.repositories.job_repository import JobRunRepository
+from enums import JobType, JobStatus
+
 class JobRunService:
 
     def __init__(self, db):
