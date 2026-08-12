@@ -1,4 +1,4 @@
-from database.repositories.blog_post_repository import BlogPostRepository
+from database.repositories.blog_repository import BlogPostRepository
 
 
 class BlogService:
