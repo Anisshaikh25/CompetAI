@@ -1,27 +1,27 @@
-# from scrapers.base_scraper import BaseScraper
+from scrapers.base_scraper import BaseScraper
 
 
-# scraper = BaseScraper()
+scraper = BaseScraper()
 
-# try:
+try:
 
-#     url = "https://www.bookdio.org/all-books"
+    url = "https://www.bookdio.org/all-books"
 
-#     html = scraper.fetch_page(url)
+    html = scraper.fetch_page(url)
 
-#     print("Successfully fetched Bookdio!")
+    print("Successfully fetched Bookdio!")
 
-#     print("\nHTML Length:")
-#     print(len(html))
+    print("\nHTML Length:")
+    print(len(html))
 
-#     print("\nFirst 1000 characters:\n")
-#     print(html[:1000])
+    print("\nFirst 1000 characters:\n")
+    print(html[:1000])
 
-# finally:
+finally:
 
-#     scraper.close()
+    scraper.close()
 
-#     ##output
+    ##output
 #      python -m tests.test_bookdio_connection
 # Successfully fetched Bookdio!
 
