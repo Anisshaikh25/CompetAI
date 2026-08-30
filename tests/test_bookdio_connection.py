@@ -1,25 +1,25 @@
-from scrapers.base_scraper import BaseScraper
+# from scrapers.base_scraper import BaseScraper
 
 
-scraper = BaseScraper()
+# scraper = BaseScraper()
 
-try:
+# try:
 
-    url = "https://www.bookdio.org/all-books"
+#     url = "https://www.bookdio.org/all-books"
 
-    html = scraper.fetch_page(url)
+#     html = scraper.fetch_page(url)
 
-    print("Successfully fetched Bookdio!")
+#     print("Successfully fetched Bookdio!")
 
-    print("\nHTML Length:")
-    print(len(html))
+#     print("\nHTML Length:")
+#     print(len(html))
 
-    print("\nFirst 1000 characters:\n")
-    print(html[:1000])
+#     print("\nFirst 1000 characters:\n")
+#     print(html[:1000])
 
-finally:
+# finally:
 
-    scraper.close()
+#     scraper.close()
 
     ##output
 #      python -m tests.test_bookdio_connection
@@ -45,4 +45,49 @@ finally:
 
 
 
+from scrapers.base_scraper import BaseScraper
 
+
+scraper = BaseScraper()
+
+try:
+
+    url = "https://www.bookdio.org/all-books"
+
+    html = scraper.fetch_page(url)
+
+    print("Successfully fetched Bookdio!")
+
+    print("\nHTML Length:")
+    print(len(html))
+
+    # Search for useful keywords
+    keywords = [
+        "title",
+        "author",
+        "rating",
+        "book",
+        "category"
+    ]
+
+    for keyword in keywords:
+
+        print(f"\nSearching for: {keyword}")
+
+        index = html.lower().find(keyword.lower())
+
+        if index != -1:
+
+            print("Found!")
+
+            start = max(0, index - 300)
+            end = min(len(html), index + 700)
+
+            print(html[start:end])
+
+        else:
+            print("Not found.")
+
+finally:
+
+    scraper.close()
