@@ -15,7 +15,14 @@ def main():
         print("\nPage opened successfully!")
         print(f"Page title: {scraper.get_title()}")
 
-        print("\nFinding book rows...")
+        print("\nWaiting for book table...")
+
+        table = scraper.wait_for_element(
+            By.CSS_SELECTOR,
+            "table"
+        )
+
+        print("Book table found successfully!")
 
         rows = scraper.driver.find_elements(
             By.CSS_SELECTOR,
