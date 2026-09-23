@@ -34,47 +34,74 @@ def main():
 
         html = scraper.get_html()
 
-        print(f"\nRendered HTML length: {len(html)}")
+        print(
+            f"\nRendered HTML length: {len(html)}"
+        )
 
         parser = SeleniumHTMLParser(html)
 
-        print("\nSearching for product links...")
-
-        product_links = []
-
-        for link in parser.soup.find_all("a", href=True):
-
-            href = link.get("href")
-
-            if href and "/p/" in href:
-
-                title = link.get_text(
-                    " ",
-                    strip=True
-                )
-
-                if title:
-                    product_links.append({
-                        "title": title,
-                        "url": href
-                    })
+        # --------------------------------------------------
+        # Inspect product-related elements
+        # --------------------------------------------------
 
         print(
-            f"Possible product links found: "
-            f"{len(product_links)}"
+            "\nInspecting product-related HTML..."
         )
 
-        print("\nFirst 10 possible products:\n")
+        for selector in [
+            "article",
+            "[class*='product']",
+            "[class*='Product']",
+            "[class*='card']",
+            "[class*='Card']",
+        ]:
 
-        for index, product in enumerate(
-            product_links[:10],
+            elements = parser.soup.select(
+                selector
+            )
+
+            print(
+                f"{selector} -> "
+                f"{len(elements)} elements"
+            )
+
+        # --------------------------------------------------
+        # Inspect links
+        # --------------------------------------------------
+
+        print("\nInspecting links...")
+
+        links = parser.soup.find_all(
+            "a",
+            href=True
+        )
+
+        print(
+            f"Total links found: {len(links)}"
+        )
+
+        print("\nFirst 30 links:\n")
+
+        for index, link in enumerate(
+            links[:30],
             start=1
         ):
 
-            print(f"Product {index}")
-            print(f"Title: {product['title']}")
-            print(f"URL: {product['url']}")
-            print("-" * 70)
+            text = link.get_text(
+                " ",
+                strip=True
+            )
+
+            href = link.get("href")
+
+            print(
+                f"{index}. "
+                f"text={text[:100]}"
+            )
+
+            print(
+                f"   href={href}"
+            )
 
     except Exception as e:
 
@@ -84,6 +111,7 @@ def main():
     finally:
 
         scraper.close()
+
         print("\nBrowser closed.")
 
 
